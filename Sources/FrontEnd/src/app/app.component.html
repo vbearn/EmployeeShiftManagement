@@ -1,0 +1,55 @@
+<app-nav></app-nav>
+
+<div class="container">
+  <div class="starter-template">
+    <h1>Employee Shift Calculator</h1>
+  </div>
+
+  <h3></h3>
+
+  <div class="form-group">
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="totalEmplyees">Total number of employees</label>
+        <input class="form-control" id="totalEmplyees" [(ngModel)]="totalEmployees" type="text" >
+      </div>
+    </div>
+    <div class="row mt-3 ">
+      <div class="col-lg-6">
+        <label for="firstShiftEmployee">Employee for "First Shift" on day 1</label>
+        <input class="form-control" id="firstShiftEmployee" [(ngModel)]="firstShiftEmployee" type="text" placeholder="Enter the number (id) of employee">
+      </div>
+      <div class="col-lg-6">
+        <label for="secondShiftEmployee">Employee for "Second Shift" on day 1</label>
+        <input class="form-control" id="secondShiftEmployee" [(ngModel)]="secondShiftEmployee" type="text" placeholder="Enter the number (id) of employee">
+      </div>
+    </div>
+    <div class="row mt-3 ">
+      <div class="col-lg-12 text-right">
+        <button type="button" class="btn btn-primary text-right" (click)="calculateClicked()">Calculate Shifts</button>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <table class="table table-striped  mb-5">
+        <thead>
+          <tr>
+            <th>Day #</th>
+            <th>First Shift</th>
+            <th>Second Shift</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let day of calculatedDays ">
+            <td>{{day.day}}</td>
+            <td>{{day.firstShiftEmployee}}</td>
+            <td>{{day.secondShiftEmployee}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<app-footer></app-footer>
