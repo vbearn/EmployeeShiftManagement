@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  companyx.employeeshiftmanagement:
+    image: companyx.employeeshiftmanagement
+    build:
+      context: .
+      dockerfile: CompanyX.EmployeeShiftManagement\Dockerfile
