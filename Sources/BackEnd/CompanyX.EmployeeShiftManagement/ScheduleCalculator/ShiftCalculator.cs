@@ -6,33 +6,71 @@ using System.Threading.Tasks;
 
 namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
 {
-    internal class ScheduleCalculator
+
+    internal interface IShiftCalculator
     {
+
+        List<EmployeeShiftItem> CalculateShiftsForEmployees(int numberOfDays, int firstShiftEmployee, int secondShiftEmployee);
+        void SetEmployeeIdList(IEnumerable<int> employeeIds);
+
+    }
+
+    /// <summary>
+    /// Calculator for employee shifts on a given schedule
+    /// </summary>
+    internal class ShiftCalculator : IShiftCalculator
+    {
+
+        #region Fields
+
         int currentDayNumber = 0;
         int currentShift = 1;
 
-        ScheduleRuleManager ruleManager;
-        Queue<int> emplyeeIdSeedQueue;
-        List<ScheduleShiftItem> plannedScheduleShifts;
-
-
-        public ScheduleCalculator(IEnumerable<int> employeeIds)
+        ShiftRuleManager ruleManager;
+        public void SetRules(List<ISchiftRuleBase> rules)
         {
-            this.ruleManager = new ScheduleRuleManager();
+            this.ruleManager.SetRules(rules);
+        }
+      
+        Queue<int> emplyeeIdSeedQueue;
+        public void SetEmployeeIdList(IEnumerable<int> employeeIds)
+        {
             this.emplyeeIdSeedQueue = new Queue<int>(employeeIds);
-            this.plannedScheduleShifts = new List<ScheduleShiftItem>();
         }
 
-        public List<ScheduleShiftItem> CalculateShiftsForEmployees(int numberOfDays, int firstShiftEmployee, int secondShiftEmployee)
+        List<EmployeeShiftItem> plannedScheduleShifts;
+
+        #endregion
+
+        #region init
+
+        public ShiftCalculator()
         {
-            plannedScheduleShifts.Add(new ScheduleShiftItem()
+            this.ruleManager = new ShiftRuleManager();
+            this.plannedScheduleShifts = new List<EmployeeShiftItem>();
+        }
+
+        #endregion
+
+        #region Caluclations
+
+        /// <summary>
+        /// Schedules the shifts for employees given the parameters
+        /// </summary>
+        /// <param name="numberOfDays">total number of days to calculate</param>
+        /// <param name="firstShiftEmployee">the employee which should be pre-allocated on first shift of day 1</param>
+        /// <param name="secondShiftEmployee">the employee which should be pre-allocated on second shift of day 1</param>
+        /// <returns></returns>
+        public List<EmployeeShiftItem> CalculateShiftsForEmployees(int numberOfDays, int firstShiftEmployee, int secondShiftEmployee)
+        {
+            plannedScheduleShifts.Add(new EmployeeShiftItem()
             {
                 DayNumber = 0,
                 ShiftNumber = 1,
                 EmployeeId = firstShiftEmployee,
             });
 
-            plannedScheduleShifts.Add(new ScheduleShiftItem()
+            plannedScheduleShifts.Add(new EmployeeShiftItem()
             {
                 DayNumber = 0,
                 ShiftNumber = 2,
@@ -49,7 +87,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
                 var currentPlannigEmployeeId = emplyeeIdSeedQueue.Dequeue();
                 emplyeeIdSeedQueue.Enqueue(currentPlannigEmployeeId);
 
-                var currentPlanningScheduleShift = new ScheduleShiftItem()
+                var currentPlanningScheduleShift = new EmployeeShiftItem()
                 {
                     DayNumber = currentDayNumber,
                     ShiftNumber = currentShift,
@@ -94,5 +132,8 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
             }
         }
 
+        #endregion
+
     }
+
 }

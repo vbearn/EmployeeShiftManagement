@@ -23,7 +23,8 @@ namespace CompanyX.EmployeeShiftManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            // configure CORS for angular client as it is hosted on a different port 4200 when used in development mode)
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => 
             {
                 builder.AllowAnyOrigin()
                        .AllowAnyMethod()
@@ -31,6 +32,9 @@ namespace CompanyX.EmployeeShiftManagement
             }));
 
             services.AddMvc();
+
+            // add ScheduleCalculator DI service
+            services.AddScoped<ScheduleCalculator.IShiftCalculator, ScheduleCalculator.ShiftCalculator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
