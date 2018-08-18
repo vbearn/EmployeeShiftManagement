@@ -2,34 +2,70 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CompanyX.EmployeeShiftManagement.ScheduleCalculator;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyX.EmployeeShiftManagement.Controllers
 {
+
     [Route("api/[controller]")]
-    public class ScheduleController : Controller
+    internal class ScheduleController : Controller
     {
 
-        // POST api/values
-        [HttpPost]
-        public ScheduleCalculateResultModel Post([FromBody]ScheduleCalculateModel scheduleCalculateModel)
+        #region Fields
+
+        private readonly IShiftCalculator scheduleCalculator;
+
+        #endregion
+
+        #region init
+
+        public ScheduleController(IShiftCalculator scheduleCalculator)
         {
+            this.scheduleCalculator = scheduleCalculator;
+        }
+
+        #endregion
+
+        #region Contoller Public API
+
+        [HttpPost]
+        public JsonResult Post([FromBody]ScheduleCalculateModel scheduleCalculateModel)
+        {
+            // checking arguments
+            //if (scheduleCalculateModel.TotalDays < 1)
+            //{
+            //  return  StatusCode(400, "TotalDays should be positive");
+            //}
+
+            
+            // generating a list of employee IDs from 1 to TotalEmployees, and randomizing the numbers so no employee is given a priority in scheduling
             var employeesList = Enumerable.Range(1, scheduleCalculateModel.TotalEmployees).ToArray();
             employeesList = employeesList.RandomizeOrder();
 
-            var sc = new CompanyX.EmployeeShiftManagement.ScheduleCalculator.ScheduleCalculator(employeesList);
+            this.scheduleCalculator.SetEmployeeIdList(employeesList);
 
-            var plannedShifts = sc.CalculateShiftsForEmployees(14,
+            // caluclating the shifts based on REST params
+            var calculatedShifts = this.scheduleCalculator.CalculateShiftsForEmployees(scheduleCalculateModel.TotalDays,
                 scheduleCalculateModel.FirstShiftEmployee,
                 scheduleCalculateModel.SecondShiftEmployee);
 
+            return MakeResultJsonFromCalculatedShifts(calculatedShifts);
+
+        }
+
+        #endregion
+
+        #region Helper
+
+        private JsonResult MakeResultJsonFromCalculatedShifts(List<EmployeeShiftItem> calculatedShifts)
+        {
+            var shiftsGroupedByDay = calculatedShifts.GroupBy(x => x.DayNumber).ToList();
 
             var result = new ScheduleCalculateResultModel()
             {
                 Days = new List<ScheduleCalculateResultDayModel>()
             };
-
-            var shiftsGroupedByDay = plannedShifts.GroupBy(x => x.DayNumber).ToList();
 
             var resultDays = shiftsGroupedByDay.Select(shiftInDay =>
             {
@@ -40,43 +76,18 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
                 return new ScheduleCalculateResultDayModel()
                 {
                     Day = $"Day {(shiftInDay.Key + 1)}",
+                    // if this shift matches no employee, it is considered as a "Off Shift" or holiday
                     FirstShiftEmployee = firstShiftEmp.HasValue ? $"Employee {firstShiftEmp}" : "-- Holiday --",
                     SecondShiftEmployee = secondShiftEmp.HasValue ? $"Employee {secondShiftEmp}" : "-- Holiday --",
                 };
             });
             result.Days.AddRange(resultDays);
 
-            return result;
+            return Json(result);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-    }
-    public class ScheduleCalculateModel
-    {
-        public int TotalEmployees { get; set; }
-        public int FirstShiftEmployee { get; set; }
-        public int SecondShiftEmployee { get; set; }
-    }
-    public class ScheduleCalculateResultModel
-    {
-        public List<ScheduleCalculateResultDayModel> Days { get; set; }
+        #endregion
 
     }
 
-    public class ScheduleCalculateResultDayModel
-    {
-        public string Day { get; set; }
-        public string FirstShiftEmployee { get; set; }
-        public string SecondShiftEmployee { get; set; }
-    }
 }
