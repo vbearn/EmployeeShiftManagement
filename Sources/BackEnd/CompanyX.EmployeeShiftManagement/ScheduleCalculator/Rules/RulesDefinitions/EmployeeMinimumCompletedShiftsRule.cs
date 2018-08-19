@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator.Rules
 {
 
-    internal class EmployeeMinimumCompletedShiftsRule : ISchiftRuleBase
+    internal class EmployeeMinimumCompletedShiftsRule : IShiftRuleBase
     {
         public bool SatisfiesRule(EmployeeShiftItem currentPlanningShift, IReadOnlyList<EmployeeShiftItem> pastScheduleItemList)
         {

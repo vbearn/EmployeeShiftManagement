@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator.Rules
 {
 
-    internal class ConsecutiveAfternoonShiftsRule : ISchiftRuleBase
+    internal class ConsecutiveAfternoonShiftsRule : IShiftRuleBase
     {
         public bool SatisfiesRule(EmployeeShiftItem currentPlanningShift, IReadOnlyList<EmployeeShiftItem> pastScheduleItemList)
         {

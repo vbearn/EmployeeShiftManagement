@@ -12,6 +12,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
 
         List<EmployeeShiftItem> CalculateShiftsForEmployees(int numberOfDays, int firstShiftEmployee, int secondShiftEmployee);
         void SetEmployeeIdList(IEnumerable<int> employeeIds);
+        void SetRules(List<IShiftRuleBase> rules);
 
     }
 
@@ -27,7 +28,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
         int currentShift = 1;
 
         ShiftRuleManager ruleManager;
-        public void SetRules(List<ISchiftRuleBase> rules)
+        public void SetRules(List<IShiftRuleBase> rules)
         {
             this.ruleManager.SetRules(rules);
         }

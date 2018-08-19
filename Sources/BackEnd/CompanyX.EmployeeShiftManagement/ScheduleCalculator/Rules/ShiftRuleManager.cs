@@ -11,8 +11,8 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator.Rules
 
         #region Fields
 
-        private List<ISchiftRuleBase> rules;
-        public void SetRules(List<ISchiftRuleBase> rules)
+        private List<IShiftRuleBase> rules;
+        public void SetRules(List<IShiftRuleBase> rules)
         {
             this.rules = rules;
         }

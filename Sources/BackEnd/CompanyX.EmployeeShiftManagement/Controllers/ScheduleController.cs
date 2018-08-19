@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CompanyX.EmployeeShiftManagement.ScheduleCalculator;
+using CompanyX.EmployeeShiftManagement.ScheduleCalculator.Rules;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyX.EmployeeShiftManagement.Controllers
@@ -44,6 +45,12 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
             employeesList = employeesList.RandomizeOrder();
 
             this.scheduleCalculator.SetEmployeeIdList(employeesList);
+            this.scheduleCalculator.SetRules(new List<IShiftRuleBase>() {
+                new OneShiftPerDayRule(),
+                new ConsecutiveAfternoonShiftsRule(),
+                new ConsecutiveDayShiftsEligibleForExemptionRule(),
+                new EmployeeMinimumCompletedShiftsRule()
+            });
 
             // caluclating the shifts based on REST params
             var calculatedShifts = this.scheduleCalculator.CalculateShiftsForEmployees(scheduleCalculateModel.TotalDays,
