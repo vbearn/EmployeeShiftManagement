@@ -174,8 +174,8 @@ var AppComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"](
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
-/* harmony import */ var _node_modules_angular_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/@angular/http */ "./node_modules/@angular/http/fesm5/http.js");
-/* harmony import */ var src_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/config */ "./src/config.ts");
+/* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
+/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../settings */ "./src/settings.ts");
 
 
 var AppComponent = /** @class */ (function () {
@@ -197,7 +197,7 @@ var AppComponent = /** @class */ (function () {
             totalDays: this.totalDays,
             holidaysOff: this.holidaysOff,
         };
-        this.http.post(src_config__WEBPACK_IMPORTED_MODULE_1__["Settings"].GET_SERVICE_URL(), calculateModel).subscribe(function (result) {
+        this.http.post(_settings__WEBPACK_IMPORTED_MODULE_1__["Settings"].GET_SERVICE_URL(), calculateModel).subscribe(function (result) {
             var resultJson = result.json();
             _this.calculatedDays = resultJson.days;
         });
@@ -349,35 +349,6 @@ var NavComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/config.ts":
-/*!***********************!*\
-  !*** ./src/config.ts ***!
-  \***********************/
-/*! exports provided: Settings */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Settings", function() { return Settings; });
-var Settings = /** @class */ (function () {
-    function Settings() {
-    }
-    Settings.GET_SERVICE_URL = function () {
-        if (this.SERVICE_URL)
-            return this.SERVICE_URL;
-        else
-            return window.location.protocol + "//" + window.location.hostname + "/api/schedule";
-    };
-    // set this field to the address of backend service. e.g: SERVICE_URL = "http://172.22.143.228/api/schedule"
-    // when empty, it is considered as the current location that the page is opened into
-    Settings.SERVICE_URL = "";
-    return Settings;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/environments/environment.ts":
 /*!*****************************************!*\
   !*** ./src/environments/environment.ts ***!
@@ -427,6 +398,39 @@ if (_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].produc
 }
 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["platformBrowser"]().bootstrapModuleFactory(_app_app_module_ngfactory__WEBPACK_IMPORTED_MODULE_2__["AppModuleNgFactory"])
     .catch(function (err) { return console.log(err); });
+
+
+/***/ }),
+
+/***/ "./src/settings.ts":
+/*!*************************!*\
+  !*** ./src/settings.ts ***!
+  \*************************/
+/*! exports provided: Settings */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Settings", function() { return Settings; });
+var Settings = /** @class */ (function () {
+    function Settings() {
+    }
+    Settings.GET_SERVICE_URL = function () {
+        if (this.SERVICE_URL)
+            return this.SERVICE_URL;
+        else {
+            var port = "";
+            if (window.location.port)
+                port = ":" + window.location.port;
+            return window.location.protocol + "//" + window.location.hostname + port + "/api/schedule";
+        }
+    };
+    // when debugging, set this field to the address of backend service. e.g: SERVICE_URL = "http://172.22.143.228/api/schedule"
+    // when empty, it is considered as the current location that the page is opened into
+    Settings.SERVICE_URL = "";
+    return Settings;
+}());
+
 
 
 /***/ }),
