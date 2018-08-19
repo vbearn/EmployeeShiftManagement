@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Http } from '../../node_modules/@angular/http';
-import { Settings } from 'src/config';
+import { Http } from '@angular/http';
+import { Settings } from '../settings';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +37,7 @@ export class AppComponent {
       holidaysOff: this.holidaysOff,
     };
 
-    this.http.post(Settings.SERVICE_URL, calculateModel).subscribe(result => {
+    this.http.post(Settings.GET_SERVICE_URL(), calculateModel).subscribe(result => {
       let resultJson = result.json();
       this.calculatedDays = resultJson.days;
     });
