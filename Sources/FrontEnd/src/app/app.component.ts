@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Http } from '../../node_modules/@angular/http';
+import { Settings } from 'src/config';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,9 @@ import { Http } from '../../node_modules/@angular/http';
 export class AppComponent {
 
   totalEmployees: number = 10;
+  totalDays: number = 14;
+  holidaysOff: boolean = true;
+  
   firstShiftEmployee: number = 1;
   secondShiftEmployee: number = 2;
 
@@ -24,12 +28,16 @@ export class AppComponent {
   calculateClicked() {
 
     this.calculatedDays = [];
-    
-    this.http.post("http://localhost:10104/api/schedule", {
+
+    let calculateModel = {
       TotalEmployees: this.totalEmployees,
       FirstShiftEmployee: this.firstShiftEmployee,
       SecondShiftEmployee: this.secondShiftEmployee,
-    }).subscribe(result => {
+      totalDays: this.totalDays,
+      holidaysOff: this.holidaysOff,
+    };
+
+    this.http.post(Settings.SERVICE_URL, calculateModel).subscribe(result => {
       let resultJson = result.json();
       this.calculatedDays = resultJson.days;
     });
