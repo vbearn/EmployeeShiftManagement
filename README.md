@@ -5,22 +5,20 @@ This is a sample application for scheduling working shifts of employees given a 
 
 ## Specification
 
-The application gets a total number of employees and total number of days (to schedule) and then begins to caluculate a shift schedule consisting of two shifts per day and ranging form day one to the total number of days provided from the user. HOLIDAYS (Friday, Saturday) are considered off days.
+The application caluculate a shift schedule consisting of two shifts per day, based on the total number of employees and total number of days provided from the user. Holidays (Saturday, Sunday) are considered off days.
 
 ## Rules
 
 - Employees can do at most one-half day shift in a day.
 - Employees cannot have two afternoon shifts on consecutive days. 
 - Each employees should complete one whole day of support in the scheduling period. 
-- If an employee work on two consecutive days, they are eligible to get two days exemption.
+- If an employee works on two consecutive days, they are eligible to get two days exemption.
+- Scheduling should be started from the first working day of the upcoming week.
+- Employees should not work on Holidays (Optional)
 
 ## How to run
 
 This project is consisted of an ASP 2.1 Core solution for backend and an Angular 6 project for frontend UI. The communication between projects are based on standard REST Service.
-
-### Run backend
-
-Backend services are exposed on a REST Service as follows:
 
 ```
 POST http://{SERVER_IP}/api/schedule HTTP/1.1
@@ -35,6 +33,8 @@ Content-Type: application/json
 	HolidaysOff: true
 }
 ```
+
+### Run backend
 
 Open the solution located in `Sources/BackEnd/CompanyX.EmployeeShiftManagement.sln` in Visual Studio 2017. Press F5 to debug the project. UI is build as static HTML files and have been put on wwwroot folder, so there is no need to run Angular frontend to get the demo running.
 
