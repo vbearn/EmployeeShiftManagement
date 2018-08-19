@@ -9,6 +9,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
 
     internal class EmployeeShiftItem
     {
+        public DateTime Date { get; set; }
         public int DayNumber { get; set; }
 
         // The shift number for current day: First Shift is 1, Second Shift is 2

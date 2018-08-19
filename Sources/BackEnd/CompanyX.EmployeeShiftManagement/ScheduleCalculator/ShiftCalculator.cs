@@ -10,7 +10,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
     internal interface IShiftCalculator
     {
 
-        List<EmployeeShiftItem> CalculateShiftsForEmployees(int numberOfDays, int firstShiftEmployee, int secondShiftEmployee);
+        List<EmployeeShiftItem> CalculateShiftsForEmployees(DateTime startDate, int numberOfDays, int firstShiftEmployee, int secondShiftEmployee);
         void SetEmployeeIdList(IEnumerable<int> employeeIds);
         void SetRules(List<IShiftRuleBase> rules);
 
@@ -62,10 +62,11 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
         /// <param name="firstShiftEmployee">the employee which should be pre-allocated on first shift of day 1</param>
         /// <param name="secondShiftEmployee">the employee which should be pre-allocated on second shift of day 1</param>
         /// <returns></returns>
-        public List<EmployeeShiftItem> CalculateShiftsForEmployees(int numberOfDays, int firstShiftEmployee, int secondShiftEmployee)
+        public List<EmployeeShiftItem> CalculateShiftsForEmployees(DateTime startDate, int numberOfDays, int firstShiftEmployee, int secondShiftEmployee)
         {
             plannedScheduleShifts.Add(new EmployeeShiftItem()
             {
+                Date = startDate,
                 DayNumber = 0,
                 ShiftNumber = 1,
                 EmployeeId = firstShiftEmployee,
@@ -73,6 +74,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
 
             plannedScheduleShifts.Add(new EmployeeShiftItem()
             {
+                Date = startDate,
                 DayNumber = 0,
                 ShiftNumber = 2,
                 EmployeeId = secondShiftEmployee,
@@ -90,6 +92,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
 
                 var currentPlanningScheduleShift = new EmployeeShiftItem()
                 {
+                    Date = startDate.AddDays(currentDayNumber),
                     DayNumber = currentDayNumber,
                     ShiftNumber = currentShift,
                     EmployeeId = currentPlannigEmployeeId,

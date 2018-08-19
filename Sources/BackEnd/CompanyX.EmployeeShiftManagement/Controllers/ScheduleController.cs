@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CompanyX.EmployeeShiftManagement.Helpers;
 using CompanyX.EmployeeShiftManagement.ScheduleCalculator;
 using CompanyX.EmployeeShiftManagement.ScheduleCalculator.Rules;
 using Microsoft.AspNetCore.Mvc;
@@ -70,10 +71,13 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
             employeesList = employeesList.RandomizeOrder();
 
             scheduleCalculator.SetEmployeeIdList(employeesList);
-          
+
+
+            // find the next working day of the upcoming week
+            var nextMonday = DateTime.Now.NextOccuringDayOfWeek(DayOfWeek.Monday).Date;
 
             // caluclating the shifts based on REST params
-            var calculatedShifts = scheduleCalculator.CalculateShiftsForEmployees(scheduleCalculateModel.TotalDays,
+            var calculatedShifts = scheduleCalculator.CalculateShiftsForEmployees(nextMonday, scheduleCalculateModel.TotalDays,
                 scheduleCalculateModel.FirstShiftEmployee,
                 scheduleCalculateModel.SecondShiftEmployee);
 
@@ -102,7 +106,7 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
 
                 return new ScheduleCalculateResultDayModel()
                 {
-                    Day = $"Day {(shiftInDay.Key + 1)}",
+                    Day = $"Day {(shiftInDay.Key + 1)} ({shiftInDay.First().Date.ToShortDateString()})",
                     // if this shift matches no employee, it is considered as a "Off Shift" or holiday
                     FirstShiftEmployee = firstShiftEmp.HasValue ? $"Employee {firstShiftEmp}" : "-- Holiday --",
                     SecondShiftEmployee = secondShiftEmp.HasValue ? $"Employee {secondShiftEmp}" : "-- Holiday --",

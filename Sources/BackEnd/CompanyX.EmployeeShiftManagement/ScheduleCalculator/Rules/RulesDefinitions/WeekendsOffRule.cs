@@ -6,25 +6,21 @@ using System.Threading.Tasks;
 namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator.Rules
 {
 
-    internal class OneShiftPerDayRule : IShiftRuleBase
+    internal class WeekendsOffRule : IShiftRuleBase
     {
         public bool SatisfiesRule(EmployeeShiftItem currentPlanningShift, IReadOnlyList<EmployeeShiftItem> pastScheduleItemList)
         {
             if (currentPlanningShift == null)
                 throw new ArgumentNullException("currentPlanningShift");
 
-            var hasOtherShiftsToday = pastScheduleItemList.Any(x =>
-            x.EmployeeId == currentPlanningShift.EmployeeId && x.DayNumber == currentPlanningShift.DayNumber);
+            // Weekends should be excluded from shift planning
+            var dayInWeek = currentPlanningShift.Date.DayOfWeek;
 
-            if (hasOtherShiftsToday)
-            {
-                // this emplyee had another shift today and is not eligible for another working shift
+            if (dayInWeek ==  DayOfWeek.Saturday || dayInWeek ==  DayOfWeek.Sunday)
                 return false;
-            }
             else
-            {
                 return true;
-            }
+
         }
 
     }
