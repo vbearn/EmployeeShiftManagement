@@ -5,7 +5,7 @@
     <DockerTargetOS>Windows</DockerTargetOS>
     <ProjectGuid>b9b137a5-00fa-4acd-94fe-2289155c41b8</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://{ServiceIPAddress}/api/schedule</DockerServiceUrl>
+    <DockerServiceUrl>http://{ServiceIPAddress}/</DockerServiceUrl>
     <DockerServiceName>companyx.employeeshiftmanagement</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
