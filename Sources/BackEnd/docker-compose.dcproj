@@ -3,9 +3,9 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.0</ProjectVersion>
     <DockerTargetOS>Windows</DockerTargetOS>
-    <ProjectGuid>54167fda-00f9-4c23-a506-96449242a07d</ProjectGuid>
+    <ProjectGuid>b9b137a5-00fa-4acd-94fe-2289155c41b8</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://{ServiceIPAddress}/api/values</DockerServiceUrl>
+    <DockerServiceUrl>http://{ServiceIPAddress}/api/schedule</DockerServiceUrl>
     <DockerServiceName>companyx.employeeshiftmanagement</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
