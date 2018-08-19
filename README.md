@@ -44,15 +44,15 @@ The project has two options for runnig:
 
 To run the backend in Docker you will need to install [Docker for Windows](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/docker/visual-studio-tools-for-docker?view=aspnetcore-2.1)
 
-Press F5 to debug the project using Docker. please ensure that Docker daemon is up and running. If Docker running option is not visible in the Run button, remove the Docker project and then right-click on `CompanyX.EmployeeShiftManagement` project, select Add and then click on Docker Support.
+Press F5 to debug the project using Docker. Please ensure that Docker daemon is up and running. If Docker running option is not visible in the Run button, remove the docker-compose project and then right-click on `CompanyX.EmployeeShiftManagement` project, select Add and then click on Docker Support.
 
-#### Run backend without Docker
+#### Run backend in IIS Express
 
-If Docker is not present in the machine, the project can be run via IISExpress. Simply right-click on docker-compose project and then click on Unload Project menu Item. Now the default debugger is set to IISExpress. Press F5 to debug the project using IISExpress.
+If Docker is not present in the machine, the project can be run via IIS Express. Simply right-click on docker-compose project and then click on Unload Project menu Item. Now the default debugger is set to IIS Express. Press F5 to debug the project using IIS Express.
  
 ### Run frontend
 
-UI is statically built and have been put on wwwroot folder on the Visual Studio Solution, so **there is no need to run Angular frontend to get the demo running. **
+UI is statically built and have been put on wwwroot folder on the Visual Studio Solution, so **there is no need to run Angular frontend to get the demo running**.
 
 But for the development purposes, fronend source can be built by node.js >8 and npm >6. Goto the terminal and execute these tasks:
 
