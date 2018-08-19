@@ -32,7 +32,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator
         {
             this.ruleManager.SetRules(rules);
         }
-      
+
         Queue<int> emplyeeIdSeedQueue;
         public void SetEmployeeIdList(IEnumerable<int> employeeIds)
         {

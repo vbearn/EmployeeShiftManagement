@@ -46,6 +46,8 @@ namespace CompanyX.EmployeeShiftManagement
             }
             app.UseCors("CorsPolicy");
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseMvc();
         }

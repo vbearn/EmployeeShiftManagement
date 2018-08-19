@@ -10,25 +10,32 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
 {
 
     [Route("api/[controller]")]
-    internal class ScheduleController : Controller
+    public class ScheduleController : Controller
     {
 
         #region Fields
 
-        private readonly IShiftCalculator scheduleCalculator;
+        private readonly IServiceProvider injector;
 
         #endregion
 
         #region init
 
-        public ScheduleController(IShiftCalculator scheduleCalculator)
+        public ScheduleController(IServiceProvider injector)
         {
-            this.scheduleCalculator = scheduleCalculator;
+            this.injector = injector;
+
         }
 
         #endregion
 
         #region Contoller Public API
+
+        [HttpGet]
+        public string Get()
+        {
+            return "Service test OK. To consume the service, use POST endpoint and post the required data as ScheduleCalculateModel json model.";
+        }
 
         [HttpPost]
         public JsonResult Post([FromBody]ScheduleCalculateModel scheduleCalculateModel)
@@ -39,21 +46,34 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
             //  return  StatusCode(400, "TotalDays should be positive");
             //}
 
-            
-            // generating a list of employee IDs from 1 to TotalEmployees, and randomizing the numbers so no employee is given a priority in scheduling
-            var employeesList = Enumerable.Range(1, scheduleCalculateModel.TotalEmployees).ToArray();
-            employeesList = employeesList.RandomizeOrder();
 
-            this.scheduleCalculator.SetEmployeeIdList(employeesList);
-            this.scheduleCalculator.SetRules(new List<IShiftRuleBase>() {
+            // creating a calculator instance from dependency injector
+            var scheduleCalculator = injector.GetService(typeof(IShiftCalculator)) as IShiftCalculator;
+
+            // setting calculation rules
+            var rules = new List<IShiftRuleBase>() {
                 new OneShiftPerDayRule(),
                 new ConsecutiveAfternoonShiftsRule(),
                 new ConsecutiveDayShiftsEligibleForExemptionRule(),
                 new EmployeeMinimumCompletedShiftsRule()
-            });
+            };
+
+            if (scheduleCalculateModel.HolidaysOff)
+            {
+                rules.Add(new WeekendsOffRule());
+            }
+
+            scheduleCalculator.SetRules(rules);
+
+            // generating a list of employee IDs from 1 to TotalEmployees, and randomizing the numbers so no employee is given a priority in scheduling
+            var employeesList = Enumerable.Range(1, scheduleCalculateModel.TotalEmployees).ToArray();
+            employeesList = employeesList.RandomizeOrder();
+
+            scheduleCalculator.SetEmployeeIdList(employeesList);
+          
 
             // caluclating the shifts based on REST params
-            var calculatedShifts = this.scheduleCalculator.CalculateShiftsForEmployees(scheduleCalculateModel.TotalDays,
+            var calculatedShifts = scheduleCalculator.CalculateShiftsForEmployees(scheduleCalculateModel.TotalDays,
                 scheduleCalculateModel.FirstShiftEmployee,
                 scheduleCalculateModel.SecondShiftEmployee);
 
