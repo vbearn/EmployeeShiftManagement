@@ -13,7 +13,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator.Rules.Tests
         {
 
             var shiftRuleManager = new ShiftRuleManager();
-            shiftRuleManager.SetRules(new System.Collections.Generic.List<IShiftRuleBase>() { new SatisfyEverythingRule() });
+            shiftRuleManager.SetRules(new List<IShiftRuleBase>() { new SatisfyEverythingRule() });
             var testShift = new EmployeeShiftItem();
 
             var result = shiftRuleManager.IsEmployeeEligibleForShift(testShift, null);
@@ -26,7 +26,7 @@ namespace CompanyX.EmployeeShiftManagement.ScheduleCalculator.Rules.Tests
         {
 
             var shiftRuleManager = new ShiftRuleManager();
-            shiftRuleManager.SetRules(new System.Collections.Generic.List<IShiftRuleBase>() {
+            shiftRuleManager.SetRules(new List<IShiftRuleBase>() {
                 new SatisfyEverythingRule(),
                 new SatisfyEverythingRule(),
                 new SatisfyNothingRule(),
