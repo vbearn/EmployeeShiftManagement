@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CompanyX.EmployeeShiftManagement
+namespace CompanyX.EmployeeShiftManagement.Helpers
 {
     public static class Randomize
     {

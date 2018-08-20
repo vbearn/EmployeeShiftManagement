@@ -9,7 +9,7 @@ namespace CompanyX.EmployeeShiftManagement.Helpers
     {
         public static DateTime NextOccuringDayOfWeek(this DateTime dt, DayOfWeek nextDayOfWeek)
         {
-            if (dt.DayOfWeek == DayOfWeek.Monday)
+            if (dt.DayOfWeek == nextDayOfWeek)
                 dt = dt.AddDays(1);
 
             while (dt.DayOfWeek != nextDayOfWeek) dt = dt.AddDays(1);
