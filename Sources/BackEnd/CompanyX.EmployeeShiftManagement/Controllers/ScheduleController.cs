@@ -44,7 +44,7 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
             // checking arguments
             //if (scheduleCalculateModel.TotalDays < 1)
             //{
-            //  return  StatusCode(400, "TotalDays should be positive");
+            //   throw new Exception(400, "TotalDays should be positive");
             //}
 
 
@@ -68,7 +68,10 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
 
             // generating a list of employee IDs from 1 to TotalEmployees, and randomizing the numbers so no employee is given a priority in scheduling
             var employeesList = Enumerable.Range(1, scheduleCalculateModel.TotalEmployees).ToArray();
-            employeesList = employeesList.RandomizeOrder();
+            if (scheduleCalculateModel.RandomizeEmployees)
+            {
+                employeesList = employeesList.RandomizeOrder();
+            }
 
             scheduleCalculator.SetEmployeeIdList(employeesList);
 

@@ -15,6 +15,9 @@ namespace CompanyX.EmployeeShiftManagement.Controllers
         public int FirstShiftEmployee { get; set; }
         public int SecondShiftEmployee { get; set; }
         public bool HolidaysOff { get; set; }
+        public bool RandomizeEmployees { get; set; }
+
+        
     }
 
 }
